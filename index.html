@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X-Team Security</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #0e1621; color: white; text-align: center; }
+        .card { padding: 20px; border-radius: 15px; background: #17212b; box-shadow: 0 4px 15px rgba(0,0,0,0.3); width: 80%; }
+        .btn { background: #2481cc; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h3>🛡️ نظام التحقق الآمن</h3>
+        <p>اضغط على الزر أدناه لتأمين حسابك وتوثيق جهازك</p>
+        <button class="btn" onclick="sendFingerprint()">توثيق الجهاز الآن</button>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        function sendFingerprint() {
+            // سحب معلومات فريدة من المتصفح والجهاز
+            const fingerprint = [
+                navigator.userAgent,
+                screen.height,
+                screen.width,
+                screen.colorDepth,
+                new Date().getTimezoneOffset(),
+                navigator.hardwareConcurrency || 'unknown',
+                navigator.deviceMemory || 'unknown'
+            ].join('|');
+
+            // تحويل المعلومات لنص مشفر بسيط (Base64) لسهولة النقل
+            const encoded = btoa(unescape(encodeURIComponent(fingerprint)));
+            
+            // إرسال البيانات للبوت وإغلاق الصفحة
+            tg.sendData(encoded);
+        }
+    </script>
+</body>
+</html>
